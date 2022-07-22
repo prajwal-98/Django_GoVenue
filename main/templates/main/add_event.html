@@ -1,0 +1,37 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+	<h1>Add Event</h1>
+<br/>
+
+<div class="shadow p-4 mb-5 bg-body rounded" style="background-color: #ffffff;">
+
+
+{% if submitted %}
+		Your Event Was Submitted Succefully!!!
+
+	{% else %}
+
+		<form action="" method=POST enctype="multipart/form-data">
+			{% csrf_token %}
+
+			{{ form.as_p }}
+
+			<center><input type="submit" value="Submit" class="btn btn-success"></center>
+
+		</form>
+		{% endif %}
+
+
+
+{% else %}
+<h1>Sorry! You Must Be Logged In To View This Page...</h1>
+
+<a href="{% url 'login' %}">Login Here</a>
+
+{% endif %}
+</div>
+
+{% endblock %}

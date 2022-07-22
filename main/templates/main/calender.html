@@ -1,0 +1,64 @@
+{% extends 'main/base.html' %}
+{% block content %}
+
+<div class="shadow p-4 mb-5 bg-body rounded" style="background-color: #ffffff;">
+<center>
+	<h1>Hello {{ name }}! Events For {{ month }} {{ year }}</h1>
+	As of {{ time }}
+	<br/><br/>
+	{{ cal|safe }}
+
+
+	<br/><br/>
+</center>
+</div>
+		<h3>Events This Month...</h3>
+
+<div class="shadow p-4 mb-5 bg-body rounded" style="background-color: #ffffff;">
+
+
+{% if event_list %}
+{% for event in event_list %}
+				<div class="card">
+		  <div class="card-header">
+			{{ event }}
+		  </div>
+		  <div class="card-body">
+			<h5 class="card-title">Venue: {{ event.venue }}</h5>
+			<p class="card-text">
+				<ul>
+		<li>Date: {{ event.event_date }}</li>
+
+		<li>Venue Website: {{ event.venue.web }}</li>
+		<li>Manager: {{ event.manager }}</li>
+		<li>Description: {{ event.description }}</li>
+			<li>Attendees:<br/>
+			{% for user in event.attendees.all %}
+		{{ user }}<br/>
+			{% endfor %}
+			</li></ul>
+  </p>
+			  </div>
+			  {% if user.is_authenticated %}
+				{% if user == event.manager %}
+				  <div class="card-footer text-muted">
+
+					<a href="{% url 'update-events' event.id %}" class="btn btn-outline-secondary btn-sm">Update Event</a>
+
+					<a href="{% url 'delete-events' event.id %}" class="btn btn-outline-danger btn-sm">Delete Event</a>
+
+				  </div>
+				{% endif %}
+			  {% endif %}
+			</div>
+		<br/>
+		{% endfor %}
+
+	{% else %}
+	Sorry...There are no events this month...
+	{% endif %}
+
+</div>
+
+
+{% endblock %}

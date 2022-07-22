@@ -1,0 +1,68 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+<div class="card">
+  <div class="card-header">
+    {% if searched %}
+		You Searched For {{ searched }}
+	{% else %}
+		Search Events...
+	{% endif %}
+  </div>
+  <div class="card-body">
+     <form method=POST action="{% url 'search-event' %}">
+        {% csrf_token %}
+
+        <input class="form-control me-2" type="search" placeholder="Search Venues" aria-label="Search" name="searched">
+        <br/>
+        <button class="btn btn-outline-success" type="submit">Search</button>
+     </form>
+  </div>
+</div>
+
+<br/>
+
+{% if searched %}
+    {% for events in event %}
+        <div class="card">
+              <div class="card-header">
+                  <h2>{{ events.name }}</h2>
+              </div>
+              <div class="card-body">
+                    <h5 class="card-title">Venue: {{ events.venue }}</h5>
+                    <p class="card-text">
+                      <ul>
+                        <li>Date: {{ events.event_date }}</li>
+                        <li>Venue Website: <a href="#"> {{ events.venue.web }}</a></li>
+                        <li>Manager: {{ events.manager }}</li>
+                        <li>Description: {{ events.description }}</li>
+                            <li>Attendees:<br/>
+                            {% for user in events.attendees.all %}
+                                {{ user }}<br/>
+                            {% endfor %}
+                            </li>
+                      </ul>
+                    </p>
+              </div>
+              {% if user.is_authenticated %}
+                {% if user == events.manager %}
+                  <div class="card-footer text-muted">
+
+                    <a href="{% url 'update-events' events.id %}" class="btn btn-outline-secondary btn-sm">Update Event</a>
+
+                    <a href="{% url 'delete-events' events.id %}" class="btn btn-outline-danger btn-sm">Delete Event</a>
+
+                  </div>
+                {% endif %}
+              {% endif %}
+        </div>
+	<br/><br/>
+
+    {% endfor %}
+{% else %}
+    <center><strong><h1>You must search for and Event....</h1></strong></center>
+{% endif %}
+
+<br><br>
+{% endblock %}

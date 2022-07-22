@@ -1,0 +1,47 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+
+<div class="shadow p-4 mb-5 bg-body rounded" style="background-color: #ffffff;">
+
+
+<div class="card">
+  <div class="card-header">
+      <strong><h4>{{venue}}</h4></strong>
+      <strong><h4>{{show_venues}}</h4></strong>
+  </div>
+  <div class="card-body">
+<!--    <a href="#" class="btn btn-primary">Go somewhere</a>-->
+    <li> Address: {{ venue.address }} </li>
+    <li> Phone : {{ venue.phone }} </li>
+    <li> Gmail: {{ venue.email_Address }}</li>
+    <li> <a href="{{ show_venues.web }}">{{ venue.web }}</a></li>
+    <li> Owner: {{ venue_owner }}</li>
+
+<br><br>
+
+
+{% if venue.venue_image %}
+
+<img src="{{ venue.venue_image.url }}" width=450>
+{% endif %}
+
+
+        </p>
+    <br/>
+    <h3>Events At This Venue...</h3>
+    {% if event %}
+{% for events in event %}
+ <a href="{% url 'show-event' events.id %}">{{ events }}</a><br/>
+{% endfor %}
+<br/>
+{% else %}
+No Events Scheduled At This Time.
+{% endif %}
+  </div>
+  <br/><br/>
+  </div>
+<br>
+</div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<div class="shadow p-4 mb-5 bg-body rounded" style="background-color: #ffffff;">
+
+
+{% if user.is_authenticated %}
+        {% if user == event.manager %}
+    <center>
+    <h1>Update Your Event here</h1>
+    <form action="" method="POST">
+            {% csrf_token %}
+        {{ form.as_p }}
+            <br>
+        <input type="submit" value="Update" class="btn btn-secondary">
+        </form>
+
+        {% else %}
+        <div class="alert alert-danger" role="alert">
+            <h3>Access Denied!!</h3>
+        </div>
+        <p>You cannot access without manager permission..!!</p>
+        {% endif %}
+{% else %}
+<h1>Sorry! You Must Be Logged In To View This Page...</h1>
+
+<a href="{% url 'login' %}">Login Here</a>
+
+{% endif %}
+
+</div>
+{% endblock %}
